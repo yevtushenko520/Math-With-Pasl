@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "555593773045",
+    "firebase_url": "https://simple-math-54431.firebaseio.com",
+    "project_id": "simple-math-54431",
+    "storage_bucket": "simple-math-54431.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555593773045:android:bcb3abac3244b87b",
+        "android_client_info": {
+          "package_name": "com.kookydot.mathwithbuddies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "555593773045-1ufcittv0d4hvudrd860crl402nag66e.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "555593773045-1ufcittv0d4hvudrd860crl402nag66e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD37DuaLBpMlbYa49DPOob8pUax1soKMtg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

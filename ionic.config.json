@@ -1,0 +1,8 @@
+{
+  "name": "MathWithBuddies",
+  "app_id": "64e3fab7",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

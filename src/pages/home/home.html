@@ -1,0 +1,339 @@
+<!-- <div class="jump" style="    display: flex;
+flex-direction: column;
+position: absolute;
+top: 0;
+left: 0;">
+  <button (tap)='playSound(); jump(200)'>fill db</button>
+</div> -->
+
+<div class="main" [ngClass]="{multiplayer: state == 'inMultiplayer' || state == 'inMultiplayerBot'}">
+  <img src="./assets/back.jpg" *ngIf="state=='inMenu'" alt="" class='background'>
+  <ng-container *ngIf="state == 'inMenu'">
+
+    <div class="bg" *ngIf="customPopup.displayed"></div>
+
+    <div class="prefPopup" *ngIf="prefOpened">
+      <table>
+        <tr>
+          <th></th>
+          <th>On</th>
+          <th>Off</th>
+        </tr>
+        <tr>
+          <td>{{currentLanguage.sounds}}</td>
+          <td>
+            <i *ngIf="audioState.click" class="far fa-check-square fa-2x"></i>
+            <i *ngIf="!audioState.click" class="far fa-square fa-2x" (tap)='playSound(); toggleSounds("click",true)'></i>
+          </td>
+          <td>
+            <i *ngIf="!audioState.click" class="far fa-check-square fa-2x"></i>
+            <i *ngIf="audioState.click" class="far fa-square fa-2x" (tap)='playSound(); toggleSounds("click", false)'></i>
+          </td>
+
+        </tr>
+        <tr>
+          <td>{{currentLanguage.music}}</td>
+          <td>
+            <i *ngIf="audioState.bg" class="far fa-check-square fa-2x"></i>
+            <i *ngIf="!audioState.bg" class="far fa-square fa-2x" (tap)='playSound(); toggleSounds("bg",true)'></i>
+          </td>
+          <td>
+            <i *ngIf="!audioState.bg" class="far fa-check-square fa-2x"></i>
+            <i *ngIf="audioState.bg" class="far fa-square fa-2x" (tap)='playSound(); toggleSounds("bg", false)'></i>
+          </td>
+        </tr>
+      </table>
+      <br> {{currentLanguage.chooseLanguage}}:
+      <ul>
+        <li (tap)="playSound(); changeLang('en')">
+          <img src="./assets/flags/uk.jpg">
+        </li>
+        <li (tap)="playSound(); changeLang('ger')">
+          <img src="./assets/flags/ger.jpg">
+        </li>
+        <li (tap)="playSound(); changeLang('por')">
+          <img src="./assets/flags/por.jpg">
+        </li>
+        <li (tap)="playSound(); changeLang('spa')">
+          <img src="./assets/flags/spa.jpg">
+        </li>
+        <li (tap)="playSound(); changeLang('fr')">
+          <img src="./assets/flags/fr.jpg">
+        </li>
+        <li (tap)="playSound(); changeLang('hindi')">
+          <img src="./assets/flags/hindi.jpg">
+        </li>
+      </ul>
+
+    </div>
+
+
+    <div class="bg" *ngIf="prefOpened || auth.loader.displayed" (tap)="playSound(); prefOpened = false;"></div>
+    <app-loader *ngIf="auth.loader.displayed"></app-loader>
+    <header>
+
+      <span class="fb" (tap)="playSound(); signIn()" *ngIf="!logged; else loggedIn">
+        <img style="width: 45px;" src="./assets/fb.jpg" alt="login">
+      </span>
+
+      <ng-template #loggedIn>
+        <span class='logged' (tap)="playSound(); auth.signOut(); this.logged = false; user=null">
+          <img [src]='userPic' [alt]='user?.name'>
+          <span>Logout</span>
+        </span>
+      </ng-template>
+
+      <span class="score" (tap)='onClick()'>
+        <img src="./assets/cup.jpg" alt="score">
+        <span class="value"> {{user?.score || 0}} </span>
+      </span>
+      <span class="pref" (tap)="playSound(); prefOpened = true;">
+        <i class="fas fa-cog fa-3x"></i>
+      </span>
+    </header>
+
+    <h3 style="text-align: center">Math
+      <br>
+      <span> with </span>
+      <br>
+      <mark> Buddies </mark>
+    </h3>
+
+    <section class="content">
+
+      <div class="multiplayer" (tap)="playSound(); tryTostartMultiplayer()" [ngClass]="{disabled: levels.length < 10}">
+        <span class="circle" [ngClass]="{disabled: levels.length < 10}"></span>{{currentLanguage.multiplayer}}</div>
+      <ng-container *ngFor="let item of levels; let i = index;">
+        <div *ngIf="i == 0" class="currentLvl" (tap)="playSound(); transitToLevel(item)">
+          <span class="circle"></span>{{currentLanguage.level}} {{item}}</div>
+        <div *ngIf="i != 0" class="lvl" (tap)="playSound(); transitToLevel(item)">
+          <span class="circle"></span>{{currentLanguage.level}} {{item}}</div>
+      </ng-container>
+
+    </section>
+  </ng-container>
+
+  <ng-container *ngIf="state == 'inGame'">
+
+    <div class="tutorial" *ngIf="tutorial.displayed" (tap)="playSound(); tutorial.highlight =''; tutorial.displayed = false; tutorial.callback()">
+      <h4> {{tutorial.step}} </h4>
+    </div>
+
+    <div class="bg" *ngIf="paused || result.lost || result.won || tutorial.displayed || auth.loader.displayed"></div>
+    <app-loader *ngIf="auth.loader.displayed"></app-loader>
+
+    <div class="pausePopup" *ngIf="paused">
+      <button (tap)="playSound(); paused = false;">{{currentLanguage.backToTheGame}}</button>
+      <button (tap)="playSound(); restart()">{{currentLanguage.restart}}</button>
+      <button (tap)="playSound(); toMenu()">{{currentLanguage.menu}}</button>
+    </div>
+
+
+    <div class="loserPopup" *ngIf="result.lost">
+      <h4>{{currentLanguage.youLost}}</h4>
+      <button (tap)="playSound(); continue()">{{currentLanguage.watchVideo}}</button>
+      <button (tap)="playSound(); restart()">{{currentLanguage.restart}}</button>
+      <button (tap)="playSound(); toMenu()">{{currentLanguage.menu}}</button>
+    </div>
+
+    <div class="winnerPopup" *ngIf="result.won" (tap)="playSound(); result.won = false; play(currentLevel.level + 1)">
+      <h4>{{currentLanguage.level}} {{currentLevel.level}}</h4>
+      <h4>{{currentLanguage.youWon}}</h4>
+      <h4>{{currentLanguage.scoreReached}} {{currentLevel.neededScore}} </h4>
+      <h4>{{currentLanguage.timeSpend}} {{timeSpent}}s
+      </h4>
+    </div>
+
+
+
+    <span (tap)="playSound(); paused = true;" class="pause">
+      <i class="far fa-pause-circle"></i>
+    </span>
+
+    <div class="gameInfoWrap">
+
+      <div class="gameType">
+        <i *ngIf="currentLevel.type == 'path'" [ngClass]="{highlight: tutorial.highlight == 'score'}" class="fas fa-long-arrow-alt-right path"></i>
+        <i *ngIf="currentLevel.type == 'select'" [ngClass]="{highlight: tutorial.highlight == 'score'}" class="fas fa-plus"></i>
+      </div>
+
+      <h2 class="gameStatus">
+        <span [ngClass]="{highlight: tutorial.highlight == 'score'}">{{currentScore}}/{{currentLevel.neededScore}}</span>
+      </h2>
+    </div>
+
+    <div class="gameContent">
+      <ng-container *ngFor="let row of currentLevel.grid; let rowIndex = index">
+        <div class="gameTile" (tap)='playSound(); selectTile(cell, rowIndex, columnIndex)' *ngFor="let cell of row; let columnIndex = index"
+          [ngClass]="{
+          selectedTile: cell.state == 'selected' ||
+            cell.state == 'advised selected' ||
+            cell.state == 'should be advised selected',
+          advisedTile: cell.state == 'advised',
+          wrongTile: cell.state == 'selected wrong',
+          animated: currentLevel.level == 1 && cell.state == 'advised'
+        }">{{cell.val}}
+
+          <span *ngIf="currentLevel.type =='path' && cell.next != '' && (cell.state == 'advised' || cell.state == 'advised selected')"
+            [ngClass]="{arrowLeft: cell.next == 'left',
+          arrowRight: cell.next == 'right',
+          arrowUp: cell.next == 'up',
+          arrowDown: cell.next == 'down'
+            }">
+            <svg width="49" height="18" viewBox="0 0 49 18">
+              <path d="M0 7H45M45 7L37 0M45 7L37 14" transform="translate(0 2)" stroke="#e6a050" stroke-width="4" />
+            </svg>
+          </span>
+
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="timebarwrap" [ngClass]="{highlight: tutorial.highlight == 'timebar'}">
+      <div class="timebar" [ngClass]="{disabled: usedClue}">
+        <div class="current" [style.transform]="'translate('+timePassed+'px, -9px)'"></div>
+      </div>
+    </div>
+
+    <div class="clueWrap" [ngClass]="{highlight: tutorial.highlight == 'clue'}">
+      <button (tap)="playSound(); halp(true)" class="getClue" [ngClass]="{disabled: usedClue}" [disabled]="usedClue">
+        {{currentLanguage.clue}}
+        <i class="fab fa-youtube"></i>
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="state == 'inMultiplayer' || state == 'inMultiplayerBot'">
+
+    <div class="bg" *ngIf="customPopup.displayed"></div>
+
+    <div class="bg" *ngIf="auth.result.lost || auth.result.won || auth.result.draw"></div>
+    <div class="bg" *ngIf="disconnectAlert && !customPopup.displayed"></div>
+
+    <div class="winnerPopup" *ngIf="disconnectAlert && !customPopup.displayed">
+      <h4>Opponent disconnected</h4>
+    </div>
+
+
+
+
+    <aside class="multiplayerScore">
+
+      <span class="multname top">{{user.name.split(' ')[0]}}</span>
+      <span> {{auth.multiplayerGameState['player'+auth.matchInfo.i]}} </span>
+      <span class='matchesCount'>{{auth.multiplayerGameState.gamesPlayed}}/3</span>
+      <span *ngIf="auth.matchInfo.i == 1"> {{auth.multiplayerGameState.player2}} </span>
+      <span *ngIf="auth.matchInfo.i == 2"> {{auth.multiplayerGameState.player1}} </span>
+      <span class="multname bot">{{auth.opponent.field.playername.split(' ')[0]}}</span>
+
+    </aside>
+
+    <div class="gameType">
+      <i *ngIf="currentLevel.type == 'path'" [ngClass]="{highlight: tutorial.highlight == 'score'}" class="fas fa-long-arrow-alt-right path"></i>
+      <i *ngIf="currentLevel.type == 'select'" [ngClass]="{highlight: tutorial.highlight == 'score'}" class="fas fa-plus"></i>
+    </div>
+
+    <div class="mainContentWrap">
+
+      <div class="loserPopup" *ngIf="auth.result.lost && !customPopup.displayed">
+        <h4>{{currentLanguage.youLost}}</h4>
+      </div>
+
+      <div class="winnerPopup" *ngIf="auth.result.won">
+        <h4>{{currentLanguage.youWon}}</h4>
+      </div>
+
+      <div class="winnerPopup" *ngIf="auth.result.draw">
+        <h4>{{currentLanguage.draw}}</h4>
+      </div>
+
+      <h2 class="gameStatus">
+        <span (tap)="playSound(); multiplayerPaused = true;" class="pause">
+          <i class="far fa-pause-circle"></i>
+        </span>
+      </h2>
+
+
+      <div class="bg" *ngIf="multiplayerPaused"></div>
+      <div class="pausePopup" *ngIf="multiplayerPaused">
+        <button (tap)="playSound(); multiplayerPaused = false;">{{currentLanguage.backToTheGame}}</button>
+        <button (tap)="playSound(); toMenuMulti()">{{currentLanguage.menu}}</button>
+      </div>
+
+
+      <div class="playerGameInfo">
+        <span>
+          <img src="./assets/cup.jpg" alt="score">
+          <span>{{user.score}}</span>
+        </span>
+        <div class='multiplayerNeededScore'>{{currentScore}}/{{currentLevel.neededScore}}</div>
+      </div>
+
+      <!-- my field -->
+      <div class="gameContent">
+        <ng-container *ngFor="let row of currentLevel.grid; let rowIndex = index">
+          <div class="gameTile" (tap)='playSound(); selectTile(cell, rowIndex, columnIndex)' *ngFor="let cell of row; let columnIndex = index"
+            [ngClass]="{
+          selectedTile: cell.state == 'selected' ||
+            cell.state == 'advised selected' ||
+            cell.state == 'should be advised selected',
+          advisedTile: cell.state == 'advised',
+          wrongTile: cell.state == 'selected wrong',
+          animated: currentLevel.level == 1 && cell.state == 'advised'
+        }">{{cell.val}}</div>
+        </ng-container>
+      </div>
+
+      <div class="timebarwrap">
+        <div class="timebar">
+          <div class="current" [style.transform]="'translate('+timePassed+'px, -9px)'"></div>
+        </div>
+      </div>
+
+      <!-- opponent field -->
+
+      <div class="gameContent">
+        <ng-container *ngFor="let row of auth.opponent.field.grid; let rowIndex = index">
+          <div class="gameTile" *ngFor="let cell of row; let columnIndex = index" [ngClass]="{
+            selectedTile: cell.state == 'selected' ||
+              cell.state == 'advised selected' ||
+              cell.state == 'should be advised selected',
+            advisedTile: cell.state == 'advised',
+            wrongTile: cell.state == 'selected wrong',
+            animated: currentLevel.level == 1 && cell.state == 'advised'
+          }">{{cell.val}}</div>
+        </ng-container>
+      </div>
+
+      <div class="playerGameInfo enemy">
+        <span>
+          <img src="./assets/cup.jpg" alt="score">
+          <span>{{auth.opponent.field.playerGlobalScore}}</span>
+        </span>
+        <div class='multiplayerNeededScore'>{{auth.opponent.field.playerCurrentScore || 0}}/{{auth.opponent.field.neededScore}}</div>
+      </div>
+
+    </div>
+
+
+
+    <!-- <aside class="playerTotalScore">
+      <span>
+        <i class="fas fa-trophy fa-2x"></i>
+        <span>{{user.score}}</span>
+      </span>
+      <span>
+        <i class="fas fa-trophy fa-2x"></i>
+        <span>{{auth.opponent.field.playerGlobalScore}}</span>
+      </span>
+    </aside> -->
+
+  </ng-container>
+
+
+
+  <div class="customPopup" *ngIf="customPopup.displayed" (tap)="playSound(); customPopup.displayed = false;" [innerHTML]='customPopup.message'>
+  </div>
+
+
+</div>

@@ -1,0 +1,98 @@
+{
+  "name": "MathWithBuddies",
+  "version": "0.0.1",
+  "author": "Ionic Framework",
+  "homepage": "http://ionicframework.com/",
+  "private": true,
+  "scripts": {
+    "clean": "ionic-app-scripts clean",
+    "build": "ionic-app-scripts build",
+    "lint": "ionic-app-scripts lint",
+    "ionic:build": "ionic-app-scripts build",
+    "ionic:serve": "ionic-app-scripts serve",
+    "android:build": "export ANDROID_HOME=$HOME/Android/Sdk && export PATH=$PATH:$ANDROID_HOME/tools && export PATH=$PATH:/opt/gradle/gradle-3.4.1/bin && export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64 && export PATH=$PATH:$JAVA_HOME && ionic cordova build android",
+    "android:debug": "export ANDROID_HOME=$HOME/Android/Sdk && export PATH=$PATH:$ANDROID_HOME/tools && export PATH=$PATH:/opt/gradle/gradle-3.4.1/bin && export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64 && export PATH=$PATH:$JAVA_HOME && ionic cordova run android --device -l -c",
+    "android": "export ANDROID_HOME=$HOME/Android/Sdk && export PATH=$PATH:$ANDROID_HOME/tools && export PATH=$PATH:/opt/gradle/gradle-3.4.1/bin && export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64 && export PATH=$PATH:$JAVA_HOME && ionic cordova run android --device",
+    "android:prod": "export ANDROID_HOME=$HOME/Android/Sdk && export PATH=$PATH:$ANDROID_HOME/tools && export PATH=$PATH:/opt/gradle/gradle-3.4.1/bin && export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64 && export PATH=$PATH:$JAVA_HOME && ionic cordova build android --aot --minifyjs --minifycss --release",
+    "cordova:clear": "export ANDROID_HOME=$HOME/Android/Sdk && export PATH=$PATH:$ANDROID_HOME/tools && export PATH=$PATH:/opt/gradle/gradle-3.4.1/bin && export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64 && export PATH=$PATH:$JAVA_HOME && cordova clean",
+    "ab": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.jks platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk my-alias && cd platforms/android/app/build/outputs/apk/release/ && /home/mishanya/Android/Sdk/build-tools/27.0.3/zipalign -v 4 app-release-unsigned.apk signed.apk",
+    "sign1": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk alias_name",
+    "sign2": "cd platforms/android/app/build/outputs/apk/release/",
+    "sign3": "/home/mishanya/Android/Sdk/build-tools/27.0.3/zipalign -v 4 app-release-unsigned.apk signed.apk"
+  },
+  "dependencies": {
+    "@angular/animations": "5.2.10",
+    "@angular/common": "5.2.10",
+    "@angular/compiler": "5.2.10",
+    "@angular/compiler-cli": "5.2.10",
+    "@angular/core": "5.2.10",
+    "@angular/forms": "5.2.10",
+    "@angular/http": "5.2.10",
+    "@angular/platform-browser": "5.2.10",
+    "@angular/platform-browser-dynamic": "5.2.10",
+    "@ionic-native/admob-free": "^4.7.0",
+    "@ionic-native/admob-pro": "^4.7.0",
+    "@ionic-native/core": "4.7.0",
+    "@ionic-native/facebook": "^4.7.0",
+    "@ionic-native/firebase-analytics": "^4.7.0",
+    "@ionic-native/google-analytics": "^4.7.0",
+    "@ionic-native/in-app-browser": "^4.7.0",
+    "@ionic-native/splash-screen": "4.7.0",
+    "@ionic-native/status-bar": "4.7.0",
+    "@ionic/pro": "1.0.20",
+    "@ionic/storage": "2.1.3",
+    "angularfire2": "^5.0.0-rc.10",
+    "cordova-android": "7.0.0",
+    "cordova-ios": "4.5.4",
+    "cordova-plugin-admobpro": "^2.31.5",
+    "cordova-plugin-device": "^2.0.2",
+    "cordova-plugin-extension": "^1.5.4",
+    "cordova-plugin-facebook4": "^2.1.0",
+    "cordova-plugin-firebase-analytics": "^1.0.0",
+    "cordova-plugin-google-analytics": "^1.8.3",
+    "cordova-plugin-inappbrowser": "^3.0.0",
+    "cordova-plugin-ionic-keyboard": "^2.0.5",
+    "cordova-plugin-ionic-webview": "^1.1.19",
+    "cordova-plugin-splashscreen": "^5.0.2",
+    "cordova-plugin-whitelist": "^1.3.3",
+    "cordova-support-android-plugin": "^1.0.1",
+    "cordova-support-google-services": "^1.2.0",
+    "firebase": "^5.0.3",
+    "ionic-angular": "3.9.2",
+    "ionicons": "3.0.0",
+    "rxjs": "5.5.10",
+    "sw-toolbox": "3.6.0",
+    "zone.js": "0.8.26"
+  },
+  "devDependencies": {
+    "@ionic/app-scripts": "3.1.9",
+    "typescript": "~2.6.2"
+  },
+  "description": "An Ionic project",
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-inappbrowser": {},
+      "cordova-plugin-extension": {},
+      "cordova-plugin-admobpro": {},
+      "cordova-plugin-google-analytics": {},
+      "cordova-plugin-facebook4": {
+        "APP_ID": "1925236104174979",
+        "APP_NAME": "mwb",
+        "ANDROID_SDK_VERSION": "4.+"
+      },
+      "cordova-plugin-firebase-analytics": {
+        "FIREBASE_CORE_VERSION": "16.0.+"
+      },
+      "cordova-support-google-services": {}
+    },
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  }
+}
